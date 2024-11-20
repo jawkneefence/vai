@@ -12,16 +12,16 @@ export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: '#FFA001',
-        tabBarInactiveTintColor: '#CDCDF9',
-        headerShown: true,
+        tabBarActiveTintColor: "#FFA001",
+        tabBarInactiveTintColor: "#CDCDF9",
+        headerShown: false,
         tabBarButton: HapticTab,
         tabBarBackground: TabBarBackground,
         tabBarStyle: {
-          backgroundColor: '#161622',
+          backgroundColor: "#161622",
           borderTopWidth: 1,
-          borderTopColor: '#232533'
-        }
+          borderTopColor: "#232533",
+        },
       }}
     >
       <Tabs.Screen
@@ -30,7 +30,7 @@ export default function TabLayout() {
           href: null,
         }}
       />
-      
+
       <Tabs.Screen
         name="home"
         options={{
