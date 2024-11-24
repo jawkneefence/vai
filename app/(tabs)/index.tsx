@@ -1,22 +1,58 @@
-import { Image, SafeAreaView, ScrollView, Text, View } from "react-native";
+import { Image, ScrollView, Text, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
-import { Link } from "expo-router";
+import { Link, Redirect, router } from "expo-router";
 import { images } from "@/constants";
 import { CustomButton } from "@/components/ui/CustomButton";
+
+import appwriteConfig from "@lib/appwrite";
+{
+  /*https://appwrite.io/docs/quick-starts/react-native*/
+}
+import { Client, Account, ID, Models } from "react-native-appwrite";
+import React, { useState } from "react";
+
+let client: Client;
+let account: Account;
+
+client = new Client();
+client
+  .setEndpoint("appwriteConfig.endpoint")
+  .setProject("appwriteConfig.projectId") // Your Project ID
+  .setPlatform("appwriteConfig.platform"); // Your package name / bundle identifier
+
+account = new Account(client);
+
+const [loggedInUser, setLoggedInUser] =
+  useState<Models.User<Models.Preferences> | null>(null);
+const [email, setEmail] = useState("");
+const [password, setPassword] = useState("");
+const [name, setName] = useState("");
+
+async function login(email: string, password: string) {
+  await account.createEmailPasswordSession(email, password);
+  setLoggedInUser(await account.get());
+}
+
+async function register(email: string, password: string, name: string) {
+  await account.create(ID.unique(), email, password, name);
+  await login(email, password);
+  setLoggedInUser(await account.get());
+}
 
 export default function HomeScreen() {
   return (
     <SafeAreaView className="bg-primary h-full">
       <ScrollView contentContainerStyle={{ height: "100%" }}>
         <View className="w-full justify-center items-center h-full px-4">
-          <View className=" flex-row">
+          <View className="flex-row">
             <Image
               source={images.logo}
-              className="w-[130px] h-[84px]"
+              className="mb-2 w-[140px] h-[97px]"
               resizeMode="contain"
             />
-            <Text className="font-psemibold absolute right-11 top-14 text-3xl text-amber-500">
-            ai
+            <Text className="font-psemibold absolute right-10 top-16 text-4xl text-amber-500">
+              αi
             </Text>
           </View>
 
@@ -28,24 +64,29 @@ export default function HomeScreen() {
 
           <View className="relative mt-5">
             <Text className="text-3xl text-white font-bold text-center">
-              Discover Endless Possibilities with{' '}
-              <Text className="text-secondary-200">
-              Vai
-              </Text>
+              Discover Endless Possibilities with{" "}
+              <Text className="text-secondary-200">Vai</Text>
             </Text>
-              <Image
-                source={images.path}
-                className="w-[46px] h-[15px] absolute right-36 -bottom-2"
-                resizeMode="contain"
-              />
+            <Image
+              source={images.path}
+              className="w-[46px] h-[15px] absolute right-36 -bottom-2"
+              resizeMode="contain"
+            />
           </View>
-            <Text className="text-sm font-pregular text-gray-100 mt-7 text-center">
-                Where creativity meets innovation: embark on a journey of limitless exploration with Vai.
-            </Text>
+          <Text className="text-sm font-pregular text-gray-100 mt-7 text-center">
+            Where creativity meets innovation: embark on a journey of limitless
+            exploration with Vai.
+          </Text>
 
-            <CustomButton />
+          <CustomButton
+            title="Continue with Email"
+            handlePress={() => router.push("/(auth)/sign-in")}
+            containerStyles="w-[80%] mt-7"
+          />
         </View>
       </ScrollView>
+
+      {/*<StatusBar backgroundColor='#161622' style='light'/>*/}
     </SafeAreaView>
   );
 }
