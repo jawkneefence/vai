@@ -6,11 +6,13 @@ import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
 import { useEffect } from "react";
 import "react-native-reanimated";
+import { useUser, UserProvider } from "@/contexts/UserContext";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
+
   const [fontsLoaded, error] = useFonts({
     "Poppins-Black": require("../assets/fonts/Poppins-Black.ttf"),
     "Poppins-Bold": require("../assets/fonts/Poppins-Bold.ttf"),
@@ -31,16 +33,20 @@ export default function RootLayout() {
     }
   }, [fontsLoaded, error]);
 
+  const user = useUser(); //appwrite
+
   if (!fontsLoaded && !error) {
     return null;
   }
 
   return (
+    <UserProvider value = {user}>
     <View className="w-full h-full">
       <Stack>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
       </Stack>
       <StatusBar style="auto" />
     </View>
+    </UserProvider>
   );
 }
