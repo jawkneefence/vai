@@ -1,12 +1,12 @@
 import { View, Text, ScrollView, Image } from "react-native";
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Link } from "expo-router";
+import { Link, router } from "expo-router";
 import { images } from "@/constants";
 import { FormField } from "@/components/ui/FormField";
 import { CustomButton } from "@/components/ui/CustomButton";
 
-import { UserProvider, useUser } from "@/contexts/UserContext";
+import { useUser } from "@/contexts/UserContext";
 
 const SignIn = () => {
   const user = useUser();
@@ -19,11 +19,11 @@ const SignIn = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const submit = () => {
-    user.login(form.value.email, form.value.password);
+    user.login(form.email, form.password);
+    router.push("(tabs)");
   };
 
   return (
-    <UserProvider>
       <SafeAreaView className="bg-primary h-full">
         <ScrollView>
           <View className="w-full flex-col items-center justify-center h-full my-6">
@@ -70,7 +70,6 @@ const SignIn = () => {
           </View>
         </ScrollView>
       </SafeAreaView>
-    </UserProvider>
   );
 };
 

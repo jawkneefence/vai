@@ -6,11 +6,13 @@ import { FormField } from "@/components/ui/FormField";
 import { CustomButton } from "@/components/ui/CustomButton";
 import { Link } from "expo-router";
 
-import { UserProvider, useUser } from "@/contexts/UserContext";
+import { useUser } from "@/contexts/UserContext";
 
 const SignUp = () => {
+  const user = useUser();
 
   const [form, setForm] = useState({
+    username: "",
     email: "",
     password: "",
   });
@@ -20,9 +22,8 @@ const SignUp = () => {
   const submit = () => {
     user.register(form.email, form.password, form.username);
   };
-  const user = useUser();
+
   return (
-    <UserProvider>
       <SafeAreaView className="bg-primary h-full">
         <ScrollView>
           <View className="w-full flex-col items-center justify-center h-full my-6">
@@ -76,7 +77,6 @@ const SignUp = () => {
           </View>
         </ScrollView>
       </SafeAreaView>
-    </UserProvider>
   );
 };
 

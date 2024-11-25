@@ -3,7 +3,6 @@ import { ID } from "react-native-appwrite";
 import { account } from "../lib/appwrite";
 import { toast } from "../lib/toast";
 
-
 const UserContext = createContext();
 
 export function useUser() {
@@ -25,8 +24,15 @@ export function UserProvider(props) {
     toast('Logged out');
   }
 
-  async function register(email, password) {
+  async function register(email, password, username) {
+    try {
     await account.create(ID.unique(), email, password, username);
+    } catch(error) {
+      console.log(error);
+      toast('Password must be at least 8 characters long.');
+      throw new Error(error);
+    }
+    
     await login(email, password);
     toast('Account created');
   }

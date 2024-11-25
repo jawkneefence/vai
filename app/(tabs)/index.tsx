@@ -8,25 +8,25 @@ import { CustomButton } from "@/components/ui/CustomButton";
 import { useUser, UserProvider } from "@/contexts/UserContext";
 
 export default function HomeScreen() {
-
+  const user = useUser();
   return (
     <UserProvider>
       <SafeAreaView className="bg-primary h-full">
         <ScrollView contentContainerStyle={{ height: "100%" }}>
           <View className="w-full justify-center items-center h-full px-4">
-            <View className="flex-row">
+            <View className="mt-10 flex-row">
               <Image
-                source={images.logo}
-                className="mb-2 w-[140px] h-[97px]"
+                source={images.logo} //Vai Logo
+                className="mb-3 w-[140px] h-[97px]"
                 resizeMode="contain"
               />
-              <Text className="font-psemibold absolute right-10 top-16 text-4xl text-amber-500">
+              <Text className="font-psemibold absolute bottom-4 right-10 text-4xl text-amber-500">
                 αi
               </Text>
             </View>
 
             <Image
-              source={images.cards}
+              source={images.cards} //Dog & Anime
               className="max-w-[380px] w-full h-[300px]"
               resizeMode="contain"
             />
@@ -37,7 +37,7 @@ export default function HomeScreen() {
                 <Text className="text-secondary-200">Vai</Text>
               </Text>
               <Image
-                source={images.path}
+                source={images.path} //Orange Underline
                 className="w-[46px] h-[15px] absolute right-36 -bottom-2"
                 resizeMode="contain"
               />
@@ -47,11 +47,26 @@ export default function HomeScreen() {
               limitless exploration with Vai.
             </Text>
 
+            <View className="mt-10 w-[75%] ">
             <CustomButton
               title="Continue with Email"
               handlePress={() => router.push("/(auth)/sign-in")}
-              containerStyles="w-[80%] mt-7"
+              containerStyles={`${user.current != null? "invisible z-0" : "z-10"}`}
+              textStyles=""
+              isLoading={false}
+              invis = {user.current==null ? false : true}
             />
+            <CustomButton
+              title="Logout"
+              handlePress={() => {
+                user.logout();
+              }}
+              containerStyles={`absolute right-9 w-[75%] ${user.current == null? "invisible z-0": "z-10"}`}
+              textStyles=""
+              isLoading={false}
+              invis = {user.current==null ? true : false}
+            />
+            </View>
           </View>
         </ScrollView>
 

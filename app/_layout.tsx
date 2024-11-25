@@ -33,7 +33,7 @@ export default function RootLayout() {
     }
   }, [fontsLoaded, error]);
 
-  const user = useUser(); //appwrite
+  const user = useUser(); //appwrite!
 
   if (!fontsLoaded && !error) {
     return null;
